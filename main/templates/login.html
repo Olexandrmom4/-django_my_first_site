@@ -1,0 +1,45 @@
+{% extends 'basis.html' %}
+
+{% block title %} Авторизація {% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="head">
+<div  class="pos_head_link">
+    <a href="{% url 'home' %}">Головна сторінка</a>
+    <a href="{% url 'programs' %}">Файли</a>
+    <a href="{% url 'register' %}">Реєстрація</a>
+</div>
+
+<div class="knopka">
+    <input id="menu__toggle" type="checkbox" />
+    <label class="menu__btn" for="menu__toggle">
+        <span></span>
+    </label>
+    <ul class="menu__box">
+        <li><a href="{% url 'home' %}">Головна сторінка</a></li>
+        <li><a href="{% url 'programs' %}">Файли</a></li>
+        <li><a href="{% url 'register' %}">Реєстрація</a></li>
+    </ul>
+</div>
+</div>
+
+<div class="log_center">
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="padd">
+        Логін:<br>
+        {{form.username}}<br>
+        <br>
+        Пароль:<br>
+        {{form.password}}<br>
+        <br></div>
+      <button type="submit" class="button button1">Увійти</button>
+    </form>
+</div>
+{% endblock %}

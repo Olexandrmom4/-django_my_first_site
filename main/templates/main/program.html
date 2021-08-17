@@ -1,0 +1,221 @@
+{% extends 'basis.html' %}
+
+{% block title %} {{ content.title }} {% endblock %}
+
+{% block head %}
+<style>
+
+
+    .fot img {
+    padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline;
+    }
+
+    .fot {
+    margin-left:2%;
+    }
+
+    .pos_p {
+    margin-top: 1%;
+    background-color: black;
+    border: 2px solid #3b3c63;
+    width: 60%;
+    float: left;
+    margin-left: 2%;
+    }
+
+    .texbox {
+    margin-top: 1%;
+    border: 2px solid #3b3c63;
+    background-color: black;
+    margin-right: 2%;
+    float: right;
+    width: 32%;
+    }
+
+    .texbox p {
+    font-size: 17px;
+    padding: 5px;
+    }
+
+    details > summary {
+    font-size: 20px;
+    text-align: center;
+    padding: 8px;
+    background-color: #3b3c63;
+    cursor: pointer;
+    list-style: none;
+    transition-duration: 0.4s;
+    }
+
+    details > summary:hover {
+    background-color: green;
+    }
+
+    .bord_font {
+    padding: 10px;
+    font-family: Arial;
+    font-size: 15px;
+    }
+
+
+    .trans {
+    transition: 0.4s;
+    }
+
+    .trans:hover {
+    transform: scale(1.4);
+    }
+
+    .block_come{
+    width: 60%;
+    border: 2px solid #3b3c63;
+    background-color: black;
+    float: left;
+    margin-left: 2%;
+    margin-top: 4%;
+    }
+
+    .come {
+    float: left;
+    margin-left: 2%;
+    margin-top : 4%;
+    width: 60%;
+    }
+    .come textarea {
+    border: 2px solid #3b3c63;
+    }
+
+    textarea {
+    color: white;
+    background-color: black;
+    width: 100%;
+    font-size: 18px;
+    height: 100px;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    resize:none
+    }
+    textarea:focus { outline: none; }
+
+    @media screen and (max-width: 580px){
+
+
+    .pos_p {
+    border: 1px solid #3b3c63;
+    float: none;
+    margin-top: 4%;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    }
+
+    .texbox {
+    border: 1px solid #3b3c63;
+    float:none;
+    font-size: 10px;
+    margin-top: 4%;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    }
+    .fot {
+    margin-left: 0;
+    }
+
+    .fot img {
+    display: block;
+    }
+
+    .bord_font {
+    padding: 4px;
+    font-size: 6px;
+    }
+
+    .block_come{
+    width: 100%;
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+    }
+
+    .come {
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="head">
+<div  class="pos_head_link">
+    <a href="{% url 'programs' %}">Файли</a>
+    <a href="{% url 'home' %}">Головна сторінка</a>
+    <a href="{% url 'register' %}">Реєстрація</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout'%}">Вихід</a>
+    {% else %}
+        <a href="{% url 'login' %}">Вхід</a>
+    {% endif %}
+
+</div>
+</div>
+<div class="knopka">
+    <input id="menu__toggle" type="checkbox" />
+    <label class="menu__btn" for="menu__toggle">
+        <span></span>
+    </label>
+    <ul class="menu__box">
+        <li><a href="{% url 'home' %}">Головна сторніка</a></li>
+        <li><a href="{% url 'programs' %}">Файли</a></li>
+        {% if user.is_authenticated %}
+        {{ user.get_user }}
+            <li><a href="{% url 'logout'%}">Вихід</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Вхід</a></li>
+        {% endif %}
+        <li><a href="{% url 'register' %}">Реєстрація</a></li>
+    </ul>
+</div>
+
+<div class="pos_p">
+    <div class="fot">
+        <img src="{{ content.picture.url }}" class="Content trans" width="240" height="200" >
+        <img src="{{ content.picture1.url }}" class="Content trans" width="240" height="200">
+        <img src="{{ content.picture2.url }}" class="Content trans" width="240" height="200">
+    </div>
+    <details>
+        <summary> Показати код </summary>
+        <pre><div class="bord_font">{{ content.code}}</div></pre>
+    </details>
+</div>
+<div class="texbox">
+    <p>{{ content.title }}</p>
+    <p>{{ content.tex }}</p>
+    <button class="button button1">
+        <a href="{{ content.file.url }}" download>Завантажити</a>
+    </button>
+</div>
+<div class="block_come">
+    {% if user.is_authenticated %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit" class="button button1">Додати коментар</button>
+    </form>
+    {% endif%}
+</div>
+<div class="come">
+    {% for с in content.comment_content.all reversed %}
+        <textarea>{{с.comment_text}}</textarea>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
